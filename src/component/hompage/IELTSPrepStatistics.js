@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   font-family: 'Segoe UI', Arial, sans-serif;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 20px;
 `;
 
@@ -12,7 +12,7 @@ const Title = styled.h2`
   color: #34495e;
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 const StatsGrid = styled.div`

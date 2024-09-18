@@ -5,13 +5,14 @@ import { Star } from 'lucide-react';
 const Container = styled.div`
   font-family: Arial, sans-serif;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 70px auto;
+  
 `;
 
 const Title = styled.h2`
   color: #2c3e50;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 const TestGrid = styled.div`
@@ -25,6 +26,7 @@ const TestCard = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  
 `;
 
 const TestHeader = styled.div`

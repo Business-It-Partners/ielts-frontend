@@ -5,13 +5,13 @@ import { Star, Tag, Eye } from 'lucide-react';
 const Container = styled.div`
   font-family: Arial, sans-serif;
   background-color: #2c3e50;
-  padding: 20px;
+  padding: 40px;
   color: white;
 `;
 
 const Title = styled.h2`
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   font-weight: normal;
 `;
 
@@ -29,11 +29,7 @@ const TipCard = styled.div`
   display: flex;
 `;
 
-const TipImage = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-`;
+
 
 const TipContent = styled.div`
   padding: 15px;
@@ -135,7 +131,7 @@ const SeeMoreButton = styled.button`
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 50px;
   display: block;
   margin-left: auto;
   margin-right: auto;
