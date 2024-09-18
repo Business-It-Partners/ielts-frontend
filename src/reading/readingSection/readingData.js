@@ -6,7 +6,7 @@ export const readingData = [
         text: "The advent of artificial intelligence (AI) has revolutionized various industries, from healthcare to finance. AI technologies are now capable of performing tasks that were once the sole domain of humans, such as diagnosing diseases and trading stocks. While the benefits of AI are immense, including increased efficiency and reduced human error, there are also significant ethical concerns.",
         paragraphId: 1
       },
-      { 
+      {
         text: "One of the primary ethical concerns is data privacy. AI systems often require large amounts of data to function effectively, and this data is frequently personal or sensitive. There is a risk that this information could be misused or inadequately protected, leading to breaches of privacy.",
         paragraphId: 2
       },
@@ -85,6 +85,7 @@ export const readingData = [
         ]
       },
       {
+        // make mcq_type1 for single option scenirio
         type: 'mcq',
         option: 1,
         instruction: 'Choose the correct option.',
@@ -103,6 +104,7 @@ export const readingData = [
         ]
       },
       {
+         // make mcq_type2 for double option scenirio
         type: 'mcq',
         option: 2,
         instruction: 'Choose TWO correct options.',
