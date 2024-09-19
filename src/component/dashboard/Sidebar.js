@@ -89,7 +89,7 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-    { path: '/', icon: Home, text: 'Dashboard' },
+    { path: '/dashboard', icon: Home, text: 'Dashboard' },
     // { path: '/coaching-programs', icon: Book, text: 'Coaching Programs' },
     { path: '/mock-test', icon: FileText, text: 'Mock Test' },
     { path: '/module-wise-test', icon: FileText, text: 'Module Wise Test' },

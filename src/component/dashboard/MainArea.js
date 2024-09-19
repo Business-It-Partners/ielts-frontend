@@ -9,6 +9,7 @@ import { ShoppingCart } from 'lucide-react';
 // import CoachingPrograms from './CoachingPrograms';
 import MockTest from './MockTest';
 import ModuleWiseTest from './ModuleWiseTest';
+import StudentDashboard from './StudentDashboard';
 // import LiveClasses from './LiveClasses';
 // import ProgressReport from './ProgressReport';
 // import Community from './Community';
@@ -103,9 +104,9 @@ const Dashboard = () => {
           </Header> */}
           <Content>
             <Routes>
-              {/* <Route path="/" element={<Navigate replace to="/dashboard" />} />
-              <Route path="/dashboard" element={<DashboardContent />} />
-              <Route path="/coaching-programs" element={<CoachingPrograms />} /> */}
+              {/* <Route path="/" element={<Navigate replace to="/dashboard" />} /> */}
+              <Route path="/dashboard" element={<StudentDashboard />} />
+              {/* <Route path="/coaching-programs" element={<CoachingPrograms />} /> */}
               <Route path="/mock-test" element={<MockTest />} />
               <Route path="/module-wise-test" element={<ModuleWiseTest />} />
               {/* <Route path="/live-classes" element={<LiveClasses />} />
