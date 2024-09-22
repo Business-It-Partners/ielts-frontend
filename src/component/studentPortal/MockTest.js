@@ -4,53 +4,51 @@ import { GraduationCap, Headphones, BookOpen, PenTool, Mic, Zap, Grid } from 'lu
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
-  max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f5f5f5;
+  padding: 14px;
 `;
 
 const Title = styled.h1`
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   color: #2c3e50;
 `;
 
 const AcademicTest = styled.div`
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: #2c3e50;
 `;
 
 const Divider = styled.hr`
   border: none;
   border-top: 1px solid #ddd;
-  margin: 10px 0;
+  margin: 6px 0;
 `;
 
 const MockTestButton = styled.button`
   background-color: #dc143c;
   color: white;
   border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-size: 12px;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 `;
 
 const FullMockTestsSection = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 const FullMockTestsTitle = styled.h2`
-  font-size: 24px;
+  font-size: 18px;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
 `;
@@ -59,86 +57,91 @@ const EnrollNowButton = styled.button`
   background-color: white;
   color: #2c3e50;
   border: 1px solid #2c3e50;
-  border-radius: 15px;
-  padding: 5px 10px;
-  font-size: 14px;
+  border-radius: 10px;
+  padding: 3px 6px;
+  font-size: 10px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 6px;
 `;
 
 const Description = styled.p`
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+  font-size: 12px;
 `;
 
 const MockTestCard = styled.div`
   background-color: white;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 14px;
+  margin-bottom: 14px;
 `;
 
 const TestGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 14px;
 `;
 
 const TestSection = styled.div`
   background-color: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 14px;
   text-align: center;
 `;
 
 const IconWrapper = styled.div`
-  width: 50px;
-  height: 50px;
-  margin: 0 auto 10px;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 6px;
   color: ${props => props.color};
 `;
 
 const SectionTitle = styled.div`
   font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
 `;
 
 const FullTestBar = styled.div`
   background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 15px 20px;
+  border-radius: 6px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width:70%;
 `;
 
 const FullTestLabel = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   font-weight: bold;
   color: #2c3e50;
+  font-size: 12px;
 `;
 
 const ProgressBar = styled.div`
   flex-grow: 1;
-  height: 8px;
+  height: 5px;
   background-color: #e0e0e0;
-  border-radius: 4px;
-  margin: 0 20px;
+  border-radius: 2px;
+  margin: 0 14px;
   position: relative;
 
   &::after {
     content: '0%';
     position: absolute;
-    top: -20px;
+    top: -16px;
     left: 50%;
     transform: translateX(-50%);
     color: #2c3e50;
+    font-size: 10px;
   }
 `;
 
@@ -146,13 +149,13 @@ const StartButton = styled.button`
   background-color: #2c3e50;
   color: white;
   border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
 `;
 
 const IELTSExamLibrary = () => {
@@ -160,7 +163,6 @@ const IELTSExamLibrary = () => {
     { title: 'Listening', icon: Headphones, color: '#3498db' },
     { title: 'Reading', icon: BookOpen, color: '#2ecc71' },
     { title: 'Writing', icon: PenTool, color: '#f39c12' },
-    { title: 'Speaking', icon: Mic, color: '#e74c3c' }
   ];
 
   const mockTests = [
@@ -176,7 +178,7 @@ const IELTSExamLibrary = () => {
       <Title>IELTS EXAM LIBRARY</Title>
       
       <AcademicTest>
-        <GraduationCap size={20} style={{marginRight: '10px'}} />
+        <GraduationCap size={14} style={{marginRight: '6px'}} />
         Academic Test
       </AcademicTest>
       <Divider />
@@ -200,7 +202,7 @@ const IELTSExamLibrary = () => {
             {testSections.map((section, sectionIndex) => (
               <TestSection key={sectionIndex}>
                 <IconWrapper color={section.color}>
-                  <section.icon size={40} />
+                  <section.icon size={24} />
                 </IconWrapper>
                 <SectionTitle>{section.title}</SectionTitle>
               </TestSection>
@@ -209,12 +211,12 @@ const IELTSExamLibrary = () => {
           
           <FullTestBar>
             <FullTestLabel>
-              <Grid size={20} />
+              <Grid size={14} />
               Full Test
             </FullTestLabel>
             <ProgressBar />
             <StartButton>
-              <Zap size={16} /> Start
+              <Zap size={12} /> Start
             </StartButton>
           </FullTestBar>
         </MockTestCard>

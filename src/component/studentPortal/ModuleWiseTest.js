@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { GraduationCap, MessageCircle, PenTool, BookOpen, Headphones, Mic, Lock } from 'lucide-react';
+import { GraduationCap, MessageCircle, PenTool, BookOpen, Headphones, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+// ... (keep all the styled components as they were)
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
-  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f5f5f5;
 `;
 
 const Title = styled.h1`
@@ -111,39 +112,27 @@ const TestName = styled.span`
   color: #333;
 `;
 
-const LoadingMessage = styled.p`
-  text-align: center;
-  font-size: 18px;
-  color: #666;
-`;
-
 const ModuleWiseTest = () => {
-  const [activeTestType, setActiveTestType] = useState('speaking');
-  const [tests, setTests] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [activeTestType, setActiveTestType] = useState('writing');
+  const navigate = useNavigate();
 
   const testTypes = [
-    { type: 'speaking', icon: MessageCircle, label: 'Speaking' },
     { type: 'writing', icon: PenTool, label: 'Writing' },
     { type: 'reading', icon: BookOpen, label: 'Reading' },
     { type: 'listening', icon: Headphones, label: 'Listening' },
   ];
 
-  useEffect(() => {
-    const fetchTests = async () => {
-      setLoading(true);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const newTests = Array.from({ length: 8 }, (_, i) => ({
-        id: i + 1,
-        name: `${activeTestType.toUpperCase()} TEST ${i + 1}`,
-      }));
-      setTests(newTests);
-      setLoading(false);
-    };
-
-    fetchTests();
-  }, [activeTestType]);
+  const moduleTests = {
+    writing: [
+      { id: 1, name: 'WRITING TEST 1' },
+    ],
+    reading: [
+      { id: 1, name: 'READING TEST 1' },
+    ],
+    listening: [
+      { id: 1, name: 'LISTENING TEST 1' },
+    ],
+  };
 
   const handleTestTypeClick = (type) => {
     setActiveTestType(type);
@@ -151,9 +140,15 @@ const ModuleWiseTest = () => {
 
   const handleTestCardClick = (testId) => {
     console.log(`Clicked on test with ID: ${testId}`);
-    // Here you would typically navigate to the specific test page
-    // For example: history.push(`/test/${activeTestType}/${testId}`);
+    if (activeTestType === 'reading') {
+      navigate('/reading');
+    } else if (activeTestType === 'listening') {
+      navigate('/listening');
+    }
+    // For writing tests, you might want to add a specific navigation or action here
   };
+
+  const activeTests = moduleTests[activeTestType];
 
   return (
     <Container>
@@ -178,32 +173,28 @@ const ModuleWiseTest = () => {
           ))}
         </ButtonGroup>
         
-        {loading ? (
-          <LoadingMessage>Loading tests...</LoadingMessage>
-        ) : (
-          <>
-            <TestCount>{tests.length} Tests</TestCount>
-            <Divider />
-            
-            <MockTestTitle>{tests.length} {activeTestType.charAt(0).toUpperCase() + activeTestType.slice(1)} Mock Tests</MockTestTitle>
-            
-            <GreenButton>
-              {tests.length} {activeTestType.charAt(0).toUpperCase() + activeTestType.slice(1)} Tests
-            </GreenButton>
-            
-            <TestGrid>
-              {tests.map(test => (
-                <TestCard key={test.id} onClick={() => handleTestCardClick(test.id)}>
-                  <TestIcon>
-                    <Mic size={24} color="white" />
-                  </TestIcon>
-                  <TestName>{test.name}</TestName>
-                  <Lock size={16} color="#1E90FF" />
-                </TestCard>
-              ))}
-            </TestGrid>
-          </>
-        )}
+        <TestCount>{activeTests.length} Tests</TestCount>
+        <Divider />
+        
+        <MockTestTitle>{activeTests.length} {activeTestType.charAt(0).toUpperCase() + activeTestType.slice(1)} Mock Tests</MockTestTitle>
+        
+        <GreenButton>
+          {activeTests.length} {activeTestType.charAt(0).toUpperCase() + activeTestType.slice(1)} Tests
+        </GreenButton>
+        
+        <TestGrid>
+          {activeTests.map(test => (
+            <TestCard key={test.id} onClick={() => handleTestCardClick(test.id)}>
+              <TestIcon>
+                {activeTestType === 'writing' && <PenTool size={24} color="white" />}
+                {activeTestType === 'reading' && <BookOpen size={24} color="white" />}
+                {activeTestType === 'listening' && <Headphones size={24} color="white" />}
+              </TestIcon>
+              <TestName>{test.name}</TestName>
+              <Lock size={16} color="#1E90FF" />
+            </TestCard>
+          ))}
+        </TestGrid>
       </Section>
     </Container>
   );

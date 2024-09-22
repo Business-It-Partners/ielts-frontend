@@ -1,5 +1,9 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { Button } from 'antd';
+import { changePart } from '../utils/actions';
+import { readingData } from './readingData';
 
 const FooterNav = styled.footer`
   position: fixed;
@@ -19,7 +23,7 @@ const FooterNav = styled.footer`
 const PartOptionsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 85%;
   height: 100%;
 `;
@@ -38,6 +42,7 @@ const PartOption = styled.div`
   // border-right: 1px solid #e0e0e0;
   padding: 0 15px;
   overflow-y: hidden;
+  background-color: ${props => props.active ? '#f5f5f5' : 'white'};
 
   &:hover {
     background-color: #f5f5f5;
@@ -45,9 +50,9 @@ const PartOption = styled.div`
 `;
 
 const PartTitle = styled.div`
-  font-weight: ${props => props.isActive ? '600' : '400'};
+  font-weight: ${props => props.active ? '600' : '400'};
   margin-right: 8px;
-  color: ${props => props.isActive ? '#1890ff' : 'inherit'};
+  color: ${props => props.active ? '#1890ff' : 'inherit'};
   font-size: 14px;
 `;
 
@@ -74,14 +79,14 @@ const QuestionNumber = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10%;
-  background-color: ${props => props.isAnswered ? '#1890ff' : 'transparent'};
-  color: ${props => props.isAnswered ? '#ffffff' : '#333333'};
-  border: 1px solid ${props => props.isAnswered ? '#1890ff' : '#d9d9d9'};
+  background-color: ${props => props.attempted ? '#1890ff' : 'transparent'};
+  color: ${props => props.attempted ? '#ffffff' : '#333333'};
+  border: 1px solid ${props => props.attempted ? '#1890ff' : '#d9d9d9'};
   cursor: pointer;
   font-weight: 400;
 
   &:hover {
-    background-color: ${props => props.isAnswered ? '#40a9ff' : '#f0f0f0'};
+    background-color: ${props => props.attempted ? '#40a9ff' : '#f0f0f0'};
   }
 `;
 
@@ -98,7 +103,7 @@ const SubmitButtonContainer = styled.div`
   padding: 0 10px;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(Button)`
   width: 100%;
   height: 36px;
   background-color: #1890ff;
@@ -120,55 +125,56 @@ const SubmitButton = styled.button`
   }
 `;
 
-const PartNavigation = ({ parts, currentPart, onPartChange, onQuestionClick, answers, onSubmit }) => {
-  const getQuestionNumbers = (part) => {
-    return part.questions.flatMap(qs => qs.questions.map(q => q.questionNo));
+const Footer = ({ onSubmit }) => {
+  const currentPart = useSelector(state => state.currentPart);
+  const answeredQuestions = useSelector(state => state.answeredQuestions);
+  const dispatch = useDispatch();
+
+  const handlePartChange = (partIndex) => {
+    dispatch(changePart(partIndex));
   };
 
-  const getProgressRatio = (part) => {
-    const questionNumbers = getQuestionNumbers(part);
-    const answeredCount = questionNumbers.filter(qNo => answers[qNo] !== undefined && answers[qNo] !== '').length;
-    return `${answeredCount} of ${questionNumbers.length}`;
-  };
+  const getTotalQuestions = (part) => 
+    part.questions.reduce((acc, questionSet) => acc + questionSet.questions.length, 0);
 
-  const isQuestionAnswered = (questionNo) => {
-    return answers[questionNo] !== undefined && answers[questionNo] !== '';
-  };
+  const getSolvedQuestions = (partIndex) => 
+    Object.keys(answeredQuestions[partIndex] || {}).length;
 
   return (
     <FooterNav>
       <PartOptionsContainer>
-        {parts.map((part, index) => (
+        {readingData.map((part, partIndex) => (
           <PartOption
-            key={index}
-            onClick={() => onPartChange(index + 1)}
-            isActive={currentPart === index + 1}
+            key={partIndex}
+            onClick={() => handlePartChange(partIndex)}
+            active={partIndex === currentPart}
           >
-            <PartTitle isActive={currentPart === index + 1}>Part {index + 1}</PartTitle>
-            {currentPart === index + 1 ? (
+            <PartTitle active={partIndex === currentPart}>
+              Part {part.part}
+            </PartTitle>
+            {partIndex === currentPart ? (
               <QuestionNumbersContainer>
-                {getQuestionNumbers(part).map(questionNo => (
-                  <QuestionNumber
-                    key={questionNo}
-                    isAnswered={isQuestionAnswered(questionNo)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onQuestionClick(questionNo);
-                    }}
-                    aria-label={`Question ${questionNo}, ${isQuestionAnswered(questionNo) ? 'answered' : 'not answered'}`}
-                  >
-                    {questionNo}
-                  </QuestionNumber>
-                ))}
+                {part.questions.flatMap(questionSet => 
+                  questionSet.questions.map(question => (
+                    <QuestionNumber
+                      key={question.questionNo}
+                      attempted={answeredQuestions[partIndex]?.[question.questionNo]}
+                    >
+                      {question.questionNo}
+                    </QuestionNumber>
+                  ))
+                )}
               </QuestionNumbersContainer>
             ) : (
-              <ProgressRatio>{getProgressRatio(part)}</ProgressRatio>
+              <ProgressRatio>
+                {getSolvedQuestions(partIndex)} of {getTotalQuestions(part)}
+              </ProgressRatio>
             )}
           </PartOption>
         ))}
       </PartOptionsContainer>
       <SubmitButtonContainer>
-        <SubmitButton onClick={onSubmit}>
+        <SubmitButton type="primary" onClick={onSubmit}>
           Submit Test
         </SubmitButton>
       </SubmitButtonContainer>
@@ -176,4 +182,4 @@ const PartNavigation = ({ parts, currentPart, onPartChange, onQuestionClick, ans
   );
 };
 
-export default PartNavigation;
+export default Footer;

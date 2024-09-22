@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HeroWrapper = styled.section`
   background: linear-gradient(to right, #0b2545 0%, #13315c 100%);
@@ -35,8 +36,7 @@ const Subtitle = styled.p`
   margin-bottom: 2rem;
   max-width: 600px;
 `;
-
-const StartButton = styled.button`
+const StartButton = styled(Link)`
   background-color: #f4a261;
   color: #ffffff;
   border: none;
@@ -46,6 +46,8 @@ const StartButton = styled.button`
   border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-decoration: none;
+  display: inline-block;
 
   &:hover {
     background-color: #e76f51;
@@ -138,7 +140,7 @@ const HeroSection = () => {
         <Subtitle>
           Get ready for your 2024 IELTS exam by practicing our 100+ IELTS mock tests <HighlightedText>for FREE.</HighlightedText>
         </Subtitle>
-        <StartButton>START NOW</StartButton>
+        <StartButton to="/student-portal">START NOW</StartButton>
         <UserCount>
           <UserIcons>
             <img src="/api/placeholder/24/24" alt="User 1" />

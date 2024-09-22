@@ -12,7 +12,7 @@ import IELTSPrepStatistics from '../component/hompage/IELTSPrepStatistics'
 const Hompage = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       <IELTSAICheckerBanner />
       <LatestIELTSTestReleases />

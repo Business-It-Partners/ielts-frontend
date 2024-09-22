@@ -1,40 +1,44 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Button, message, Input } from 'antd';
+import styled from 'styled-components';
 import { readingData } from './readingData';
 import TrueFalseQuestion from './questionTypes/TrueFalseQuestion';
 import FillInTheBlankQuestion from './questionTypes/FillInBlanksQuestion';
 import FillInParagraphQuestion from './questionTypes/FillInParagraphQuestion';
 import MCQQuestion from './questionTypes/MCQQuestion';
 import HeadingMatchingQuestion from './questionTypes/MatchingHeadings';
-import { changePart, answerQuestion } from '../utils/actions'
+import { changePart, answerQuestion } from '../utils/actions';
 import Timer from './Timer';
-import styled from 'styled-components';
+import Footer from './Footer';
 
 const { Title, Paragraph } = Typography;
-
-const FooterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  border-top: 1px solid #d9d9d9;
-`;
-
 
 const ReadingSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  height: 100vh;
   font-family: Arial, sans-serif;
-  height: 90vh;
+`;
+
+const TimerWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: white;
+  padding: 10px 0;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   position: relative;
-  height: calc(100% - 60px);
+  height: calc(100vh - 120px);
+  margin-top: 60px;
+  margin-bottom: 60px;
+  overflow: hidden;
 `;
 
 const StyledPassageContainer = styled.div`
@@ -64,118 +68,6 @@ const Divider = styled.div`
 const QuestionSet = styled.div`
   margin-bottom: 30px;
 `;
-
-const SubmitButtonWrapper = styled.div`
-  text-align: center;
-  margin-top: 20px;
-
-`;
-
-const TimerWrapper = styled.div`
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: white;
-  padding: 10px 0;
-  border-bottom: 1px solid #d9d9d9;
-`;
-const PartContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-  flex: 1;
-  background-color: ${props => props.active ? '#f0f0f0' : 'white'};
-
-  &:not(:last-child) {
-    border-right: 1px solid #d9d9d9;
-  }
-`;
-
-const PartTitle = styled.div`
-  font-weight: ${props => props.active ? 'bold' : 'normal'};
-  color: ${props => props.active ? '#1890ff' : '#000000'};
-  margin-bottom: 5px;
-`;
-
-const QuestionNumbers = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-`;
-
-const QuestionNumber = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #d9d9d9;
-  border-radius: 50%;
-  font-size: 12px;
-  background-color: ${props => props.attempted ? '#1890ff' : 'white'};
-  color: ${props => props.attempted ? 'white' : 'black'};
-`;
-
-const Summary = styled.div`
-  font-size: 12px;
-  color: #666;
-`;
-
-const Footer = () => {
-  const currentPart = useSelector(state => state.currentPart);
-  const answeredQuestions = useSelector(state => state.answeredQuestions);
-  const dispatch = useDispatch();
-
-  const handlePartChange = (partIndex) => {
-    dispatch(changePart(partIndex));
-  };
-
-  const getTotalQuestions = (part) => 
-    part.questions.reduce((acc, questionSet) => acc + questionSet.questions.length, 0);
-
-  const getSolvedQuestions = (partIndex) => 
-    Object.keys(answeredQuestions[partIndex] || {}).length;
-
-  return (
-    <FooterContainer>
-      {readingData.map((part, partIndex) => (
-        <PartContainer 
-          key={partIndex} 
-          onClick={() => handlePartChange(partIndex)}
-          active={partIndex === currentPart}
-        >
-          <PartTitle active={partIndex === currentPart}>
-            Part {part.part}
-          </PartTitle>
-          {partIndex === currentPart ? (
-            <QuestionNumbers>
-              {part.questions.flatMap(questionSet => 
-                questionSet.questions.map(question => (
-                  <QuestionNumber 
-                    key={question.questionNo} 
-                    attempted={answeredQuestions[partIndex]?.[question.questionNo]}
-                  >
-                    {question.questionNo}
-                  </QuestionNumber>
-                ))
-              )}
-            </QuestionNumbers>
-          ) : (
-            <Summary>
-              {getSolvedQuestions(partIndex)} of {getTotalQuestions(part)}
-            </Summary>
-          )}
-        </PartContainer>
-      ))}
-    </FooterContainer>
-  );
-};
-
-
-
 
 const PassageContainer = ({ part, passageWidth, currentPart }) => {
   const dispatch = useDispatch();
@@ -218,20 +110,9 @@ const PassageContainer = ({ part, passageWidth, currentPart }) => {
 const ReadingSection = () => {
   const [passageWidth, setPassageWidth] = useState(50);
   const currentPart = useSelector(state => state.currentPart);
-  const answeredQuestions = useSelector(state => state.answeredQuestions);
-  const dispatch = useDispatch();
-  const part = readingData[currentPart];
   const answers = useSelector(state => state.answers);
   const [isTestEnded, setIsTestEnded] = useState(false);
-  const submitButtonRef = useRef(null);
-
-  const isAllQuestionsAnswered = useCallback(() => {
-    return readingData.every((part, partIndex) => {
-      const totalQuestions = part.questions.reduce((acc, questionSet) => acc + questionSet.questions.length, 0);
-      const answeredQuestions = Object.keys(answers[partIndex] || {}).length;
-      return totalQuestions === answeredQuestions;
-    });
-  }, [answers]);
+  const part = readingData[currentPart];
 
   const getStructuredAnswers = useCallback(() => {
     return readingData.reduce((acc, part, partIndex) => {
@@ -264,19 +145,11 @@ const ReadingSection = () => {
   }, [answers]);
 
   const handleSubmit = useCallback(() => {
-    // if (isAllQuestionsAnswered()) {
-    //   const structuredAnswers = getStructuredAnswers();
-    //   console.log('Submitted answers:', JSON.stringify(structuredAnswers, null, 2));
-    //   message.success('Test submitted successfully!');
-    //   setIsTestEnded(true);
-    // } else {
-    //   message.warning('Please answer all questions before submitting.');
-    // }
-     const structuredAnswers = getStructuredAnswers();
-      console.log('Submitted answers:', JSON.stringify(structuredAnswers, null, 2));
-      message.success('Test submitted successfully!');
-      setIsTestEnded(true);
-  }, [getStructuredAnswers, isAllQuestionsAnswered]);
+    const structuredAnswers = getStructuredAnswers();
+    console.log('Submitted answers:', JSON.stringify(structuredAnswers, null, 2));
+    message.success('Test submitted successfully!');
+    setIsTestEnded(true);
+  }, [getStructuredAnswers]);
 
   const handleTimeUp = useCallback(() => {
     const structuredAnswers = getStructuredAnswers();
@@ -363,16 +236,16 @@ const ReadingSection = () => {
             ))}
           </QuestionSet>
         );
-        case 'headingMatching':
-          return (
-            <QuestionSet key={index}>
-              <Title level={4}>Questions {questionSet.questions[0].questionNo}-{questionSet.questions[questionSet.questions.length - 1].questionNo}</Title>
-              <HeadingMatchingQuestion 
-                questionSet={questionSet}
-                partIndex={currentPart}
-              />
-            </QuestionSet>
-          );
+      case 'headingMatching':
+        return (
+          <QuestionSet key={index}>
+            <Title level={4}>Questions {questionSet.questions[0].questionNo}-{questionSet.questions[questionSet.questions.length - 1].questionNo}</Title>
+            <HeadingMatchingQuestion 
+              questionSet={questionSet}
+              partIndex={currentPart}
+            />
+          </QuestionSet>
+        );
       default:
         return null;
     }
@@ -381,7 +254,7 @@ const ReadingSection = () => {
   return (
     <ReadingSectionContainer>
       <TimerWrapper>
-        <Timer totalSeconds={300} onTimeUp={handleTimeUp} />
+        <Timer totalSeconds={3600} onTimeUp={handleTimeUp} />
       </TimerWrapper>
       <ContentContainer>
         <PassageContainer 
@@ -394,22 +267,7 @@ const ReadingSection = () => {
           {part.questions.map(renderQuestionSet)}
         </QuestionsContainer>
       </ContentContainer>
-    <div style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-  <div style={{ width: '83%', marginRight: '2%' }}>
-    <Footer />
-  </div>
-  <SubmitButtonWrapper style={{ width: '15%' }}>
-    <Button
-      type="primary"
-      size="large"
-      onClick={handleSubmit}
-      // disabled={isTestEnded || !isAllQuestionsAnswered()}
-      style={{ width: '100%' }}
-    >
-      Submit
-    </Button>
-  </SubmitButtonWrapper>
-</div>
+      <Footer onSubmit={handleSubmit} />
     </ReadingSectionContainer>
   );
 };
