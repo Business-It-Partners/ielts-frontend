@@ -85,7 +85,6 @@ export const readingData = [
         ]
       },
       {
-        // make mcq_type1 for single option scenirio
         type: 'mcq',
         option: 1,
         instruction: 'Choose the correct option.',
@@ -104,7 +103,6 @@ export const readingData = [
         ]
       },
       {
-         // make mcq_type2 for double option scenirio
         type: 'mcq',
         option: 2,
         instruction: 'Choose TWO correct options.',
@@ -135,8 +133,7 @@ export const readingData = [
         ],
         questions: [
           { questionNo: 14, paragraphId: 1, correctHeading: 'A' },
-          // { questionNo: 15, paragraphId: 2, correctHeading: 'D' },
-          { questionNo: 16, paragraphId: 3, correctHeading: 'E' }
+          { questionNo: 15, paragraphId: 2, correctHeading: 'E' }
         ]
       }
     ]
@@ -160,17 +157,17 @@ export const readingData = [
         title: "Climate Change Effects",
         questions: [
           {
-            questionNo: 1,
+            questionNo: 16,
             text: 'Climate change refers to short-term weather changes.',
             answer: 'FALSE'
           },
           {
-            questionNo: 2,
+            questionNo: 17,
             text: 'Human activities have contributed to the increase in greenhouse gases.',
             answer: 'TRUE'
           },
           {
-            questionNo: 3,
+            questionNo: 18,
             text: 'Rising sea levels are one consequence of climate change.',
             answer: 'TRUE'
           }
@@ -182,18 +179,18 @@ export const readingData = [
         title: "Climate Change Effects",
         questions: [
           {
-            questionNo: 4,
-            text: "Climate change refers to long-term changes in {BLANK:4}.",
+            questionNo: 19,
+            text: "Climate change refers to long-term changes in {BLANK:19}.",
             answer: "temperature"
           },
           {
-            questionNo: 5,
-            text: "Human activities, such as burning fossil fuels, have increased {BLANK:5} gases.",
+            questionNo: 20,
+            text: "Human activities, such as burning fossil fuels, have increased {BLANK:20} gases.",
             answer: "greenhouse"
           },
           {
-            questionNo: 6,
-            text: "The consequences {BLANK:6} of climate change include rising levels.",
+            questionNo: 21,
+            text: "The consequences {BLANK:21} of climate change include rising levels.",
             answer: "sea"
           }
         ]
@@ -202,26 +199,26 @@ export const readingData = [
         type: 'fillInParagraph',
         instruction: 'Complete the summary. Write ONE WORD ONLY from the text for each answer.',
         title: "Climate Change Effects",
-        paragraph: `Climate change is one of the most pressing issues of our time. It refers to long-term changes in {BLANK:7}, precipitation, wind patterns, and other aspects of Earth's climate system. Human activities, particularly the burning of {BLANK:8} fuels, deforestation, and industrial processes, have significantly contributed to the increase in {BLANK:9} gases, leading to global warming. The consequences of climate change include rising sea levels, more frequent and severe {BLANK:10} events, and disruptions to ecosystems and {BLANK:11}.`,
+        paragraph: `Climate change is one of the most pressing issues of our time. It refers to long-term changes in {BLANK:22}, precipitation, wind patterns, and other aspects of Earth's climate system. Human activities, particularly the burning of {BLANK:23} fuels, deforestation, and industrial processes, have significantly contributed to the increase in {BLANK:24} gases, leading to global warming. The consequences of climate change include rising sea levels, more frequent and severe {BLANK:25} events, and disruptions to ecosystems and {BLANK:26}.`,
         questions: [
           {
-            questionNo: 7,
+            questionNo: 22,
             answer: "temperature"
           },
           {
-            questionNo: 8,
+            questionNo: 23,
             answer: "fossil"
           },
           {
-            questionNo: 9,
+            questionNo: 24,
             answer: "greenhouse"
           },
           {
-            questionNo: 10,
+            questionNo: 25,
             answer: "weather"
           },
           {
-            questionNo: 11,
+            questionNo: 26,
             answer: "biodiversity"
           }
         ]
@@ -232,7 +229,7 @@ export const readingData = [
         instruction: 'Choose the correct option.',
         questions: [
           {
-            questionNo: 12,
+            questionNo: 27,
             text: 'What is one of the significant consequences of climate change mentioned in the passage?',
             options: [
               'A. Improved agricultural yields',
@@ -250,20 +247,18 @@ export const readingData = [
         instruction: 'Choose TWO correct options.',
         questions: [
           {
-            questionNos: { 13: null, 14: null },
+            questionNos: { 28: null, 29: null },
             text: 'Which TWO of the following human activities have contributed to climate change according to the passage?',
             options: [
               'A. Deforestation',
               'B. Organic farming',
               'C. Industrial processes',
-              'D. Water conservation',
-              'E. Water conservation'
+              'D. Water conservation'
             ],
             answer: ['A', 'C']
           }
         ]
-      },
-      
+      }
     ]
   }
 ];

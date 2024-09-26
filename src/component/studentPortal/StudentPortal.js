@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Outlet, NavLink, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Home, FileText, BarChart2, HelpCircle, Settings, LogIn, ChevronLeft, Book, Users, Bell, Search, Menu, Phone, MapPin, Clock, Facebook, Twitter, Youtube } from 'lucide-react';
+import { Home, FileText, BarChart2, HelpCircle, Settings, LogIn, ChevronLeft, Book, Users, Bell, Search, Menu, Phone, MapPin, Clock, Facebook, Twitter, Youtube, LogOut } from 'lucide-react';
 
 const PortalContainer = styled.div`
   display: flex;
@@ -100,16 +100,33 @@ const MainContent = styled.main`
 `;
 
 
+
 const StudentPortal = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  useEffect(() => {
+    // Check if the user is logged in (e.g., by checking localStorage or a global state)
+    const userLoggedIn = localStorage.getItem('userData') !== null;
+    setIsLoggedIn(userLoggedIn);
+  }, []);
+
+  const handleSignOut = () => {
+    // Implement sign out logic here
+    localStorage.removeItem('userData');
+    setIsLoggedIn(false);
+    
+    // Reload the browser
+    window.location.reload();
+  };
+
   return (
     <PortalContainer>
-    
       <ContentWrapper>
         <Sidebar isOpen={isSidebarOpen}>
           <SidebarGroup>
@@ -144,10 +161,17 @@ const StudentPortal = () => {
               <Settings size={20} />
               Settings
             </SidebarLink>
-            <SidebarLink to="/student-portal/login">
-              <LogIn size={20} />
-              Login / Register
-            </SidebarLink>
+            {isLoggedIn ? (
+              <SidebarLink as="button" onClick={handleSignOut}>
+                <LogOut size={20} />
+                Sign Out
+              </SidebarLink>
+            ) : (
+              <SidebarLink to="/signin">
+                <LogIn size={20} />
+                Login / Register
+              </SidebarLink>
+            )}
           </SidebarGroup>
         </Sidebar>
         <MainContent>

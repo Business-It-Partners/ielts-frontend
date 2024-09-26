@@ -1,10 +1,9 @@
-// store.js
 import { createStore } from 'redux';
 
 const initialState = {
   currentPart: 0,
   answeredQuestions: {},
-  answers: {} // Initialize the answers object
+  answers: {}
 };
 
 function rootReducer(state = initialState, action) {
@@ -32,7 +31,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         currentPart: action.partIndex
       };
-    // Add other cases if needed
     default:
       return state;
   }

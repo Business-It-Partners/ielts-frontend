@@ -5,6 +5,8 @@ import { Button } from 'antd';
 import { changePart } from '../utils/actions';
 import { readingData } from './readingData';
 
+// ... (keep all the styled components as they are)
+
 const FooterNav = styled.footer`
   position: fixed;
   bottom: 0;
@@ -135,10 +137,24 @@ const Footer = ({ onSubmit }) => {
   };
 
   const getTotalQuestions = (part) => 
-    part.questions.reduce((acc, questionSet) => acc + questionSet.questions.length, 0);
+    part.questions.reduce((acc, questionSet) => {
+      if (questionSet.type === 'mcq' && questionSet.option > 1) {
+        return acc + Object.keys(questionSet.questions[0].questionNos).length;
+      }
+      return acc + questionSet.questions.length;
+    }, 0);
 
   const getSolvedQuestions = (partIndex) => 
     Object.keys(answeredQuestions[partIndex] || {}).length;
+
+  const getQuestionNumbers = (part) => {
+    return part.questions.flatMap(questionSet => {
+      if (questionSet.type === 'mcq' && questionSet.option > 1) {
+        return Object.keys(questionSet.questions[0].questionNos);
+      }
+      return questionSet.questions.map(question => question.questionNo.toString());
+    });
+  };
 
   return (
     <FooterNav>
@@ -154,16 +170,14 @@ const Footer = ({ onSubmit }) => {
             </PartTitle>
             {partIndex === currentPart ? (
               <QuestionNumbersContainer>
-                {part.questions.flatMap(questionSet => 
-                  questionSet.questions.map(question => (
-                    <QuestionNumber
-                      key={question.questionNo}
-                      attempted={answeredQuestions[partIndex]?.[question.questionNo]}
-                    >
-                      {question.questionNo}
-                    </QuestionNumber>
-                  ))
-                )}
+                {getQuestionNumbers(part).map(questionNo => (
+                  <QuestionNumber
+                    key={questionNo}
+                    attempted={answeredQuestions[partIndex]?.[questionNo]}
+                  >
+                    {questionNo}
+                  </QuestionNumber>
+                ))}
               </QuestionNumbersContainer>
             ) : (
               <ProgressRatio>

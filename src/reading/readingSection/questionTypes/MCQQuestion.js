@@ -1,4 +1,3 @@
-// MCQQuestion.js
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -19,12 +18,13 @@ const OptionsContainer = styled.div`
 const MCQQuestion = ({ question, partIndex, optionsToSelect }) => {
   const dispatch = useDispatch();
   const answers = useSelector(state => {
-    if ('questionNo' in question) {
-      return state.answers[partIndex]?.[question.questionNo] || [];
+    if (optionsToSelect === 1) {
+      return state.answers[partIndex]?.[question.questionNo] || null;
     } else {
-      return Object.keys(question.questionNos).map(qNo => 
-        state.answers[partIndex]?.[qNo] || null
-      );
+      return Object.keys(question.questionNos).reduce((acc, qNo) => {
+        acc[qNo] = state.answers[partIndex]?.[qNo] || null;
+        return acc;
+      }, {});
     }
   });
 
@@ -33,7 +33,8 @@ const MCQQuestion = ({ question, partIndex, optionsToSelect }) => {
       dispatch(answerQuestion(partIndex, question.questionNo, checkedValues));
     } else {
       Object.keys(question.questionNos).forEach((qNo, index) => {
-        dispatch(answerQuestion(partIndex, parseInt(qNo), checkedValues[index] || null));
+        const value = Array.isArray(checkedValues) ? checkedValues[index] : checkedValues[qNo];
+        dispatch(answerQuestion(partIndex, qNo, value || null));
       });
     }
   };
@@ -41,7 +42,7 @@ const MCQQuestion = ({ question, partIndex, optionsToSelect }) => {
   const renderOptions = () => {
     if (optionsToSelect === 1) {
       return (
-        <Radio.Group onChange={(e) => handleChange(e.target.value)} value={answers[0]}>
+        <Radio.Group onChange={(e) => handleChange(e.target.value)} value={answers}>
           {question.options.map((option, index) => (
             <Radio key={index} value={option.charAt(0)}>
               {option}
@@ -53,7 +54,7 @@ const MCQQuestion = ({ question, partIndex, optionsToSelect }) => {
       return (
         <Checkbox.Group 
           onChange={handleChange} 
-          value={answers.filter(a => a !== null)}
+          value={Object.values(answers).filter(a => a !== null)}
         >
           {question.options.map((option, index) => (
             <Checkbox key={index} value={option.charAt(0)}>

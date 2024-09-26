@@ -11,6 +11,9 @@ import HeadingMatchingQuestion from './questionTypes/MatchingHeadings';
 import { changePart, answerQuestion } from '../utils/actions';
 import Timer from './Timer';
 import Footer from './Footer';
+import PassageContainer from './PassageContainer';
+import { ArrowLeftRight } from 'lucide-react';  // Import the ArrowLeftRight icon from Lucide React
+
 
 const { Title, Paragraph } = Typography;
 
@@ -28,7 +31,7 @@ const TimerWrapper = styled.div`
   right: 0;
   z-index: 1000;
   background-color: white;
-  padding: 10px 0;
+  // padding: 10px 0;
   border-bottom: 1px solid #d9d9d9;
 `;
 
@@ -37,7 +40,7 @@ const ContentContainer = styled.div`
   position: relative;
   height: calc(100vh - 120px);
   margin-top: 60px;
-  margin-bottom: 60px;
+  // margin-bottom: 60px;
   overflow: hidden;
 `;
 
@@ -56,56 +59,41 @@ const QuestionsContainer = styled.div`
 `;
 
 const Divider = styled.div`
-  width: 2px;
-  background-color: #ccc;
+  width: 12px;
+  background-color: #f0f0f0;
   cursor: col-resize;
   height: 100%;
-  position: absolute;
+  // position: absolute;
   left: ${props => props.left}%;
   top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ResizeIcon = styled.div`
+  width: 40px;
+  height: 34px;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  // border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    color: #666;
+    font-weight:600;
+  }
 `;
 
 const QuestionSet = styled.div`
   margin-bottom: 30px;
 `;
 
-const PassageContainer = ({ part, passageWidth, currentPart }) => {
-  const dispatch = useDispatch();
-  const answers = useSelector(state => state.answers[currentPart] || {});
 
-  const headingMatchingQuestionSet = part.questions.find(q => q.type === 'headingMatching');
-
-  const handleHeadingChange = (questionNo, value) => {
-    dispatch(answerQuestion(currentPart, questionNo, value));
-  };
-
-  return (
-    <StyledPassageContainer width={passageWidth}>
-      <Title level={3}>Part {part.part}</Title>
-      {part.passage.map((paragraph, index) => (
-        <React.Fragment key={index}>
-          {headingMatchingQuestionSet && 
-           headingMatchingQuestionSet.questions.some(q => q.paragraphId === paragraph.paragraphId) ? (
-            <div>
-              <Input
-                style={{ width: '100%', marginBottom: '10px' }}
-                placeholder="Enter heading letter"
-                value={answers[headingMatchingQuestionSet.questions.find(q => q.paragraphId === paragraph.paragraphId).questionNo] || ''}
-                onChange={(e) => handleHeadingChange(
-                  headingMatchingQuestionSet.questions.find(q => q.paragraphId === paragraph.paragraphId).questionNo,
-                  e.target.value
-                )}
-              />
-              <Paragraph>{paragraph.text}</Paragraph>
-            </div>
-          ) : (
-            <Paragraph>{paragraph.text}</Paragraph>
-          )}
-        </React.Fragment>
-      ))}
-    </StyledPassageContainer>
-  );
-};
 
 const ReadingSection = () => {
   const [passageWidth, setPassageWidth] = useState(50);
@@ -262,8 +250,11 @@ const ReadingSection = () => {
           passageWidth={passageWidth} 
           currentPart={currentPart}
         />
-        <Divider onMouseDown={handleMouseDown} left={passageWidth} />
-        <QuestionsContainer passageWidth={passageWidth}>
+<Divider onMouseDown={handleMouseDown} left={passageWidth}>
+          <ResizeIcon>
+            <ArrowLeftRight size={16} />
+          </ResizeIcon>
+        </Divider>        <QuestionsContainer passageWidth={passageWidth}>
           {part.questions.map(renderQuestionSet)}
         </QuestionsContainer>
       </ContentContainer>

@@ -10,6 +10,12 @@ const QuestionContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const StyledRadioGroup = styled(Radio.Group)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
 const TrueFalseQuestion = ({ question, partIndex }) => {
   const dispatch = useDispatch();
   const answer = useSelector(state => state.answers[partIndex]?.[question.questionNo]);
@@ -24,10 +30,11 @@ const TrueFalseQuestion = ({ question, partIndex }) => {
         <strong>{question.questionNo}. </strong>
         {question.text}
       </Paragraph>
-      <Radio.Group onChange={handleAnswerChange} value={answer}>
+      <StyledRadioGroup onChange={handleAnswerChange} value={answer}>
         <Radio value="true">True</Radio>
         <Radio value="false">False</Radio>
-      </Radio.Group>
+        <Radio value="notGiven">Not Given</Radio>
+      </StyledRadioGroup>
     </QuestionContainer>
   );
 };
